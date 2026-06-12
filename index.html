@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Srećan rođendan ❤️</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: Georgia, serif;
+      background: #fff1f5;
+      color: #3b1f2b;
+    }
+
+    .slider {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .slider::-webkit-scrollbar {
+      display: none;
+    }
+
+    .slide {
+      min-width: 100vw;
+      height: 100vh;
+      scroll-snap-align: start;
+      padding: 28px 18px 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: linear-gradient(180deg, #fff1f5, #ffe6ee, #fffaf3);
+    }
+
+    .slide.dark {
+      background: linear-gradient(180deg, #3b1424, #7b1f40);
+      color: white;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 430px;
+      min-height: 520px;
+      padding: 32px 24px;
+      border-radius: 32px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 45px rgba(130, 40, 75, 0.18);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .dark .card {
+      background: rgba(255, 255, 255, 0.13);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: white;
+    }
+
+    .small {
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #b8325f;
+      margin-bottom: 14px;
+    }
+
+    .dark .small {
+      color: #ffdbe8;
+    }
+
+    .emoji {
+      font-size: 66px;
+      margin-bottom: 18px;
+      animation: pulse 1.6s infinite;
+    }
+
+    h1 {
+      font-size: 34px;
+      line-height: 1.12;
+      color: #8d2448;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 30px;
+      color: #8d2448;
+      margin-bottom: 20px;
+    }
+
+    .dark h1,
+    .dark h2 {
+      color: #ffdbe8;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 13px;
+    }
+
+    .quote {
+      font-size: 28px;
+      line-height: 1.35;
+      font-style: italic;
+      color: #7b1f40;
+      margin: 22px 0;
+    }
+
+    .dark .quote {
+      color: #ffdbe8;
+    }
+
+    .date {
+      font-size: 42px;
+      font-weight: bold;
+      color: #b8325f;
+      margin-bottom: 18px;
+    }
+
+    .dark .date {
+      color: #ffdbe8;
+    }
+
+    .counter {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 22px;
+      background: rgba(255, 241, 245, 0.95);
+      font-size: 17px;
+      line-height: 1.7;
+      color: #3b1f2b;
+    }
+
+    .hint {
+      position: absolute;
+      bottom: 32px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 14px;
+      color: rgba(59, 31, 43, 0.65);
+      z-index: 5;
+    }
+
+    .dark .hint {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .dots {
+      position: fixed;
+      bottom: 14px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      z-index: 20;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(184, 50, 95, 0.35);
+      transition: 0.25s ease;
+    }
+
+    .dot.active {
+      width: 20px;
+      border-radius: 20px;
+      background: #b8325f;
+    }
+
+    .dark-dot {
+      background: rgba(255, 255, 255, 0.45);
+    }
+
+    .signature {
+      margin-top: 20px;
+      font-size: 21px;
+      color: #8d2448;
+      font-weight: bold;
+      line-height: 1.5;
+    }
+
+    .dark .signature {
+      color: #ffdbe8;
+    }
+
+    .floating {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+      overflow: hidden;
+    }
+
+    .float-item {
+      position: absolute;
+      bottom: -40px;
+      opacity: 0.55;
+      animation: floatUp 8s linear infinite;
+      font-size: 22px;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0) scale(1);
+        opacity: 0;
+      }
+
+      15% {
+        opacity: 0.7;
+      }
+
+      to {
+        transform: translateY(-110vh) scale(1.4);
+        opacity: 0;
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.12);
+      }
+    }
+
+    @media (max-width: 380px) {
+      .card {
+        min-height: 500px;
+        padding: 28px 20px;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+
+      h2 {
+        font-size: 27px;
+      }
+
+      p {
+        font-size: 16.5px;
+      }
+
+      .date {
+        font-size: 36px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="floating" id="floating"></div>
+
+  <main class="slider" id="slider">
+    <section class="slide">
+      <div class="card">
+        <div class="small">Za mog Necolinija</div>
+        <div class="emoji">❤️</div>
+        <h1>Srećan 40. rođendan, ljubavi moja</h1>
+        <p>
+          Želim ti puno zdravlja, sreće, para i svega lepog.
+        </p>
+        <p>
+          Ljubavi ti ne želim, jer nje već imaš mnogo — od mene i svih ljudi
+          koji znaju koliko si divan čovek.
+        </p>
+      </div>
+      <div class="hint">Prevuci prstom dalje →</div>
+    </section>
+
+    <section class="slide">
+      <div class="card">
+        <div class="emoji">✨</div>
+        <h2>Kako je sve počelo</h2>
+        <p>
+          Od prvog trenutka kada smo se upoznali znala sam da ćemo biti odlični drugovi.
+        </p>
+        <p>
+          Vrlo brzo si postao moj najbolji prijatelj — osoba kojoj sam mogla da kažem baš sve.
+        </p>
+      </div>
+    </section>
+
+    <section class="slide dark">
+      <div class="card">
+        <div class="emoji">🛡️</div>
+        <h2>Kada je bilo najteže</h2>
+        <p>Kada su mnogi otišli, ti si ostao.</p>
+        <p>Kada sam se plašila, ti si bio uz mene.</p>
+        <p>Kada nisam imala snage, ti si imao dovoljno snage za oboje.</p>
+      </div>
+    </section>
+
+    <section class="slide dark">
+      <div class="card">
+        <div class="quote">„Naravno da ostajem.“</div>
+        <p>
+          To je jedna od najlepših rečenica koje sam ikada čula.
+        </p>
+        <p>
+          Tog trenutka više nisi bio samo prijatelj.
+        </p>
+        <p>
+          Postao si moj oslonac, moj anđeo čuvar i moj mir.
+        </p>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="card">
+        <div class="emoji">🌊</div>
+        <h2>More i istina</h2>
+        <p>
+          Otišla sam na more da se oporavim.
+        </p>
+        <p>
+          A vratila sam se zaljubljena.
+        </p>
+        <p>
+          Tada sam shvatila da si mi postao nešto mnogo više.
+        </p>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="card">
+        <div class="date">10.10.2024.</div>
+        <h2>Naš dan</h2>
+        <p>
+          Dan kada smo od najboljih prijatelja postali ljubav.
+        </p>
+
+        <div class="counter" id="counter">
+          Računam koliko dugo smo zajedno...
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="card">
+        <div class="emoji">❤️</div>
+        <h2>Hvala ti</h2>
+        <p>Za svaku podršku.</p>
+        <p>Za svaki zagrljaj.</p>
+        <p>Za svaki razgovor.</p>
+        <p>Za svako „Biće sve u redu“.</p>
+        <p>Za sve.</p>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="card">
+        <div class="emoji">🐾</div>
+        <h2>Hvala ti što voliš</h2>
+        <p>Nou.</p>
+        <p>Belicu.</p>
+        <p>Milenceta.</p>
+        <p>I sve male bebe koje fosterujem.</p>
+      </div>
+    </section>
+
+    <section class="slide dark">
+      <div class="card">
+        <div class="emoji">🏡</div>
+        <h2>Volim te</h2>
+        <p>Hvala ti što si moj mir.</p>
+        <p>Hvala ti što si moj dom.</p>
+        <p>Hvala ti što si ostao.</p>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="card">
+        <div class="emoji">🎂</div>
+        <h1>Srećan rođendan, ljubavi</h1>
+        <p>
+          Volim te najviše na svetu.
+        </p>
+        <p>
+          Želja mi je da svaki tvoj rođendan do kraja života dočekamo zajedno.
+        </p>
+
+        <div class="signature">
+          Tvoja Noičica 🐾<br />
+          Belica i Milence šalju posebne rođendanske kisiće ❤️
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="dots" id="dots"></div>
+
+  <script>
+    const slider = document.getElementById("slider");
+    const slides = document.querySelectorAll(".slide");
+    const dotsContainer = document.getElementById("dots");
+
+    slides.forEach((_, index) => {
+      const dot = document.createElement("div");
+      dot.className = "dot";
+      if (index === 0) dot.classList.add("active");
+
+      dot.addEventListener("click", () => {
+        slider.scrollTo({
+          left: index * window.innerWidth,
+          behavior: "smooth"
+        });
+      });
+
+      dotsContainer.appendChild(dot);
+    });
+
+    const dots = document.querySelectorAll(".dot");
+
+    slider.addEventListener("scroll", () => {
+      const index = Math.round(slider.scrollLeft / window.innerWidth);
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === index);
+      });
+    });
+
+    const startDate = new Date("2024-10-10T00:00:00");
+
+    function updateCounter() {
+      const now = new Date();
+      const diff = now - startDate;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+
+      document.getElementById("counter").innerHTML = `
+        Zajedno smo već:<br>
+        <strong>${days}</strong> dana<br>
+        <strong>${hours}</strong> sati<br>
+        <strong>${minutes}</strong> minuta<br>
+        i bezbroj osmeha ❤️
+      `;
+    }
+
+    updateCounter();
+    setInterval(updateCounter, 60000);
+
+    const floating = document.getElementById("floating");
+    const symbols = ["❤️", "💕", "💗", "🐾", "✨"];
+
+    function createFloatingItem() {
+      const item = document.createElement("div");
+      item.className = "float-item";
+      item.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      item.style.left = Math.random() * 100 + "vw";
+      item.style.fontSize = 16 + Math.random() * 18 + "px";
+      item.style.animationDuration = 7 + Math.random() * 5 + "s";
+
+      floating.appendChild(item);
+
+      setTimeout(() => {
+        item.remove();
+      }, 12000);
+    }
+
+    setInterval(createFloatingItem, 650);
+  </script>
+</body>
+</html>
